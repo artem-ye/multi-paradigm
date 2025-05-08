@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "strict": true,
+    "allowJs": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "baseUrl": ".",
+    "preserveWatchOutput": true
+  },
+  "include": ["**/*.d.ts", "*.js", "src/task.js", "src/poc.js", "src/fp.js", "src/oop.js", "src/oop.minimal.js"],
+  "exclude": ["node_modules"]
+}
