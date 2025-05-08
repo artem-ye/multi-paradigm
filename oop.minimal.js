@@ -16,12 +16,18 @@ class CSVParser {
 	#rawData = undefined;
 
 	constructor(data, opts = {}) {
-		this.#lineSeparator = opts.lineSeparator;
-		this.#columnSeparator = opts.columnSeparator;
+		const { lineSeparator, columnSeparator } = opts;
+		if (lineSeparator) this.#lineSeparator = lineSeparator;
+		if (columnSeparator) this.#columnSeparator = columnSeparator;
 		this.#rawData = data;
 	}
 
-	parse() {
+	static parse(data, opts = {}) {
+		const instance = new this(data, opts);
+		return instance.#parse();
+	}
+
+	#parse() {
 		if (!this.#rawData) return [];
 		const table = this.#parseRows(this.#rawData);
 		return this.#parseCols(table);
@@ -36,26 +42,22 @@ class CSVParser {
 	}
 }
 
-class CountryTableParser extends CSV {
+class DensityReport {
 	#table = null;
 	#densityIndex = 3;
 
-	constructor(data, opts = {}) {
-		const {
-			lineSeparator = '\n',
-			columnSeparator = ',',
-			densityIndex,
-		} = opts;
-		super(data, { columnSeparator, lineSeparator });
-		this.#densityIndex = densityIndex ?? 3;
+	constructor(table, opts = {}) {
+		const { densityIndex } = opts;
+		if (densityIndex) this.#densityIndex = densityIndex;
+		this.#table = table;
 	}
 
-	static of(data, opts) {
-		return new CountryTableParser(data, opts);
+	static create(data, opts = {}) {
+		const instance = new this(data, opts);
+		return instance.#create();
 	}
 
-	parse() {
-		this.#table = super.parse();
+	#create() {
 		this.#cutHead();
 		this.#cutTail();
 		if (this.#table.length === 0) return this.#table;
@@ -113,5 +115,6 @@ const print = (table) => {
 	table.map(format).map(printRow);
 };
 
-const res = CountryTableParser.of(data).parse();
+const table = CSVParser.parse(data);
+const res = DensityReport.create(table, { densityIndex: 3 });
 print(res);
