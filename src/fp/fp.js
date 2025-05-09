@@ -1,54 +1,76 @@
 'use strict';
 
-const { compose, curry } = require('../lib/fp.utils.js');
 const { console } = require('../../deps/deps.js');
+const { compose, curry } = require('../lib/fp.utils.js');
 
-const DENSITY = 3;
-const SKIP_FIRST = 1;
-const SKIP_LAST = 1;
+const defaults = {
+  skipFirst: 1,
+  skipLast: 1,
+  densityIndex: 3,
+  get formatScheme() {
+    const padEnd = curry((padding, s) => String(s).padEnd(padding));
+    const padStart = curry((padding, s) => String(s).padStart(padding));
+    const scheme = {
+      0: padEnd(18),
+      1: padStart(10),
+      2: padStart(8),
+      3: padStart(8),
+      4: padStart(18),
+      5: padStart(6),
+    };
+    return scheme;
+  },
+};
 
-const format = (table) => {
-  const padEnd = curry((padding, s) => String(s).padEnd(padding));
-  const padStart = curry((padding, s) => String(s).padStart(padding));
-  const meta = Object.entries({
-    0: padEnd(18),
-    1: padStart(10),
-    2: padStart(8),
-    3: padStart(8),
-    4: padStart(18),
-    5: padStart(6),
-  });
+const format = (scheme) => (table) => {
+  const meta = Object.entries(scheme);
   const formatRow = (row) =>
     meta.reduce((acc, [i, fn]) => acc + fn(row[i]), '');
   return table.map(formatRow);
 };
 
-const parse = (data) => {
+const parse = (opts) => (data) => {
+  const skipFirst = opts?.skipFirst ?? 0;
+  const skipLast = opts?.skipLast ?? 0;
+
   const parseRows = (data) => data.split('\n');
-  const cutHead = (tab) => (SKIP_FIRST > 0 ? tab.slice(SKIP_FIRST) : tab);
-  const cutTail = (tab) => (SKIP_LAST > 0 ? tab.slice(0, SKIP_LAST * -1) : tab);
+  const cutHead = (tab) => (skipFirst > 0 ? tab.slice(skipFirst) : tab);
+  const cutTail = (tab) => (skipLast > 0 ? tab.slice(0, skipLast * -1) : tab);
   const parseCols = (tab) => tab.map((row) => row.split(','));
   const process = compose(parseCols, cutTail, cutHead, parseRows);
   return process(data);
 };
 
-const prepare = (table) => {
+const prepare = curry((densityIdx, table) => {
   const max = (idx, t) => t.reduce((res, row) => Math.max(res, row[idx]), 0);
   const sort = curry((idx, t) => t.sort((r1, r2) => r2[idx] - r1[idx]));
   const percent = curry((base, v) => Math.round((v * 100) / base));
 
   const calcDensity = (table) => {
-    const densityPercent = percent(max(DENSITY, table));
-    const addDensityCol = (row) => row.concat(densityPercent(row[DENSITY]));
+    const densityPercent = percent(max(densityIdx, table));
+    const addDensityCol = (row) => row.concat(densityPercent(row[densityIdx]));
     return table.map(addDensityCol);
   };
 
   const futureColIndex = table[0].length;
   const composed = compose(sort(futureColIndex), calcDensity);
   return composed(table);
-};
+});
 
-const print = curry((printFn, table) => table.forEach((e) => printFn(e)));
-const createReport = compose(print(console.log), format, prepare, parse);
+const createReport = (data, opts = {}) => {
+  const skipFirst = opts.skipFirst ?? defaults.skipFirst;
+  const skipLast = opts.skipLast ?? defaults.skipLast;
+  const densityIndex = opts.densityIndex ?? defaults.densityIndex;
+  const formatScheme = opts.formatScheme || defaults.formatScheme;
+
+  const print = curry((printFn, table) => table.forEach((e) => printFn(e)));
+  const fork = compose(
+    print(console.log),
+    format(formatScheme),
+    prepare(densityIndex),
+    parse({ skipFirst, skipLast }),
+  );
+  fork(data);
+};
 
 module.exports = { createReport };
