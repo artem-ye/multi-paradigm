@@ -16,21 +16,11 @@ class DensityReport {
   }
 
   #create() {
-    this.#cutHead();
-    this.#cutTail();
     if (this.#table.length === 0) return this.#table;
 
     const newColIndex = this.#appendDensity();
     this.#orderBy(newColIndex);
     return this.#table;
-  }
-
-  #cutHead() {
-    this.#table.shift();
-  }
-
-  #cutTail() {
-    this.#table.pop();
   }
 
   #max(index) {

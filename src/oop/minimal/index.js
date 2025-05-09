@@ -20,9 +20,13 @@ const print = (table) => {
   table.map(format).map(printRow);
 };
 
-const createReport = (data) => {
-  const table = CSVParser.parse(data);
-  const res = DensityReport.create(table, { densityIndex: 3 });
+const createReport = (data, opts = {}) => {
+  const densityIndex = opts.densityIndex ?? 3;
+  const skipFirst = opts.skipFirst ?? 1;
+  const skipLast = opts.skipLast ?? 1;
+
+  const table = CSVParser.parse(data, { skipFirst, skipLast });
+  const res = DensityReport.create(table, { densityIndex });
   print(res);
 };
 

@@ -3,12 +3,15 @@
 class CSVParser {
   #lineSeparator = '\n';
   #columnSeparator = ',';
+  #skipFirst = 0;
+  #skipLast = 0;
   #rawData = undefined;
 
   constructor(data, opts = {}) {
-    const { lineSeparator, columnSeparator } = opts;
-    if (lineSeparator) this.#lineSeparator = lineSeparator;
-    if (columnSeparator) this.#columnSeparator = columnSeparator;
+    this.#lineSeparator = opts.lineSeparator || '\n';
+    this.#columnSeparator = opts.columnSeparator || ',';
+    this.#skipFirst = opts.skipFirst ?? 0;
+    this.#skipLast = opts.skipLast ?? 0;
     this.#rawData = data;
   }
 
@@ -20,6 +23,8 @@ class CSVParser {
   #parse() {
     if (!this.#rawData) return [];
     const table = this.#parseRows(this.#rawData);
+    if (this.#skipFirst > 0) table.splice(0, this.#skipFirst);
+    if (this.#skipLast > 0) table.splice(this.#skipLast * -1, this.#skipLast);
     return this.#parseCols(table);
   }
 
