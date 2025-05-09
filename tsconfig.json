@@ -11,6 +11,6 @@
     "baseUrl": ".",
     "preserveWatchOutput": true
   },
-  "include": ["**/*.d.ts", "*.js", "src/task.js", "src/poc.js", "src/fp.js", "src/oop.js", "src/oop.minimal.js"],
+  "include": ["**/*.d.ts", "*.js", "src/task.js", "src/poc.js", "src/fp.js", "src/oop/oop.js", "src/oop/oop.minimal.js"],
   "exclude": ["node_modules"]
 }
