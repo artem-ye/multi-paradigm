@@ -7,8 +7,8 @@ class CSV {
   #skipFirst = 0;
   #skipLast = 0;
 
-  static parse(data, fields, opts = {}) {
-    const instance = new this(data, fields, opts);
+  static parse(data, opts = {}) {
+    const instance = new this(data, opts);
     return instance.#parse();
   }
 
