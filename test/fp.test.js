@@ -38,7 +38,7 @@ Istanbul            14160467    5461    2593            Turkey    19\
 const expectedOutput = rawOut.split('\n');
 const expectedOutputCount = expectedOutput.length;
 
-it('fp', () => {
+it('fp: common use case', () => {
   createReport(data);
   assert.strictEqual(mockedLog.mock.callCount(), expectedOutputCount);
   for (let i = 0; i < expectedOutputCount; i++) {
