@@ -1,7 +1,5 @@
 'use strict';
 
-const { RecordSetAdapter } = require('./RecordSetAdapter');
-
 class RecordSet {
   #data = null;
 
@@ -9,8 +7,8 @@ class RecordSet {
     this.#data = records;
   }
 
-  static fromTable(meta, table) {
-    const records = RecordSetAdapter.toRecords(meta, table);
+  static fromTable(scheme, table) {
+    const records = toRecords(scheme, table);
     return new RecordSet(records);
   }
 
@@ -32,6 +30,23 @@ class RecordSet {
   map(fn) {
     return this.#data.map(fn);
   }
+}
+
+function toRecords(scheme, array) {
+  const meta = Object.entries(scheme).map(({ 0: field, 1: params }) => ({
+    field,
+    colIndex: params.colIndex,
+    map: params.map,
+  }));
+
+  const records = array.map((row) => {
+    const record = Object.create(null);
+    for (const { field, colIndex, map } of meta) {
+      record[field] = map ? map(row[colIndex]) : row[colIndex];
+    }
+    return record;
+  });
+  return records;
 }
 
 module.exports = { RecordSet };
