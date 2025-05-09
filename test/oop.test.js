@@ -11,7 +11,7 @@ mock.module('../deps/deps.js', {
 });
 beforeEach(() => mockedLog.mock.resetCalls());
 
-const { createReport } = require('../src/fp/fp.js');
+const { createReport } = require('../src/oop/recordset/index.js');
 
 const data = `city,population,area,density,country
 Shanghai,24256800,6340,3826,China
@@ -38,7 +38,7 @@ Istanbul            14160467    5461    2593            Turkey    19\
 const expectedOutput = rawOut.split('\n');
 const expectedOutputCount = expectedOutput.length;
 
-it('fp', () => {
+it('oop', () => {
   createReport(data);
   assert.strictEqual(mockedLog.mock.callCount(), expectedOutputCount);
   for (let i = 0; i < expectedOutputCount; i++) {
