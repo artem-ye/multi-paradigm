@@ -22,14 +22,14 @@ const defaults = {
   },
 };
 
-const format = (scheme) => (table) => {
+const format = curry((scheme, table) => {
   const meta = Object.entries(scheme);
   const formatRow = (row) =>
     meta.reduce((acc, [i, fn]) => acc + fn(row[i]), '');
   return table.map(formatRow);
-};
+});
 
-const parse = (opts) => (data) => {
+const parse = curry((opts, data) => {
   const skipFirst = opts?.skipFirst ?? 0;
   const skipLast = opts?.skipLast ?? 0;
 
@@ -39,7 +39,7 @@ const parse = (opts) => (data) => {
   const parseCols = (tab) => tab.map((row) => row.split(','));
   const process = compose(parseCols, cutTail, cutHead, parseRows);
   return process(data);
-};
+});
 
 const prepare = curry((densityIdx, table) => {
   const max = (idx, t) => t.reduce((res, row) => Math.max(res, row[idx]), 0);
