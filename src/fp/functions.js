@@ -1,6 +1,5 @@
 'use strict';
 
-const { console } = require('../../deps/deps.js');
 const { compose, curry } = require('../lib/fp.utils.js');
 
 const defaults = {
@@ -41,7 +40,7 @@ const parse = curry((opts, data) => {
   return process(data);
 });
 
-const prepare = curry((densityIdx, table) => {
+const build = curry((densityIdx, table) => {
   const max = (idx, t) => t.reduce((res, row) => Math.max(res, row[idx]), 0);
   const sort = curry((idx, t) => t.sort((r1, r2) => r2[idx] - r1[idx]));
   const percent = curry((base, v) => Math.round((v * 100) / base));
@@ -57,20 +56,6 @@ const prepare = curry((densityIdx, table) => {
   return composed(table);
 });
 
-const createReport = (data, opts = {}) => {
-  const skipFirst = opts.skipFirst ?? defaults.skipFirst;
-  const skipLast = opts.skipLast ?? defaults.skipLast;
-  const densityIndex = opts.densityIndex ?? defaults.densityIndex;
-  const formatScheme = opts.formatScheme || defaults.formatScheme;
+const print = curry((printFn, table) => table.forEach((e) => printFn(e)));
 
-  const print = curry((printFn, table) => table.forEach((e) => printFn(e)));
-  const fork = compose(
-    print(console.log),
-    format(formatScheme),
-    prepare(densityIndex),
-    parse({ skipFirst, skipLast }),
-  );
-  fork(data);
-};
-
-module.exports = { createReport };
+module.exports = { defaults, format, parse, build, print };
