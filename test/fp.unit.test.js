@@ -42,6 +42,7 @@ it('fp.build', () => {
     ['Delhi', 80, 80],
     ['Tokyo', 40, 40],
   ];
-  const res = build(1, data);
+  const densityIndex = 1;
+  const res = build(densityIndex, data);
   assert.deepEqual(res, expected);
 });
