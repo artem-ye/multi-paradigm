@@ -9,6 +9,8 @@ const { DensityReport } = require('./DensityReport.js');
 const createReport = (rawData, opts = {}) => {
   const skipFirst = opts.skipFirst ?? 1;
   const skipLast = opts.skipLast ?? 1;
+  const lineSeparator = opts.lineSeparator || '\n';
+  const columnSeparator = opts.columnSeparator || ',';
   const outScheme = opts.outScheme || DensityReport.defaultFormat;
   const inputScheme = opts.inputScheme || {
     city: { colIndex: 0 },
@@ -18,7 +20,8 @@ const createReport = (rawData, opts = {}) => {
     country: { colIndex: 4 },
   };
 
-  const parse = (data) => CSV.parse(data, { skipFirst, skipLast });
+  const parseOpts = { skipFirst, skipLast, lineSeparator, columnSeparator };
+  const parse = (data) => CSV.parse(data, parseOpts);
   const convert = (table) => RecordSet.fromTable(inputScheme, table);
   const createReport = (rs) => DensityReport.create(rs).format(outScheme);
   const print = (printFn) => (data) => data.map((e) => printFn(e));
