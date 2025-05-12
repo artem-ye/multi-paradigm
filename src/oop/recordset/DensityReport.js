@@ -27,6 +27,10 @@ class DensityReport {
     this.#recordSet = recordSet;
   }
 
+  get data() {
+    return this.#recordSet.data;
+  }
+
   format(options) {
     const opts = Object.entries(options || DensityReport.defaultFormat);
     const f = (row) => opts.reduce((acc, [i, fn]) => acc + fn(row[i]), '');

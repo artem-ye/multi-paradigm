@@ -12,6 +12,10 @@ class RecordSet {
     return new RecordSet(records);
   }
 
+  get data() {
+    return this.#data;
+  }
+
   max(field) {
     if (this.#data.length === 0) return 0;
     let max = this.#data[0][field];
