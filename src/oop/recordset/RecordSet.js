@@ -44,11 +44,7 @@ function toRecords(scheme, array) {
     for (const { field } of meta) {
       proto[field] = undefined;
     }
-    return () => {
-      const record = Object.create(null);
-      Object.setPrototypeOf(record, proto);
-      return record;
-    };
+    return () => Object.create(proto);
   };
   const createRecord = recordFactory();
 
