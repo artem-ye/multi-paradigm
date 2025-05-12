@@ -39,8 +39,17 @@ function toRecords(scheme, array) {
     map: params.map,
   }));
 
+  const recordFactory = () => {
+    const proto = Object.create(null);
+    for (const { field } of meta) {
+      proto[field] = undefined;
+    }
+    return () => Object.create(proto);
+  };
+  const createRecord = recordFactory();
+
   const records = array.map((row) => {
-    const record = Object.create(null);
+    const record = createRecord();
     for (const { field, colIndex, map } of meta) {
       record[field] = map ? map(row[colIndex]) : row[colIndex];
     }
