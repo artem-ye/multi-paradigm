@@ -5,6 +5,16 @@ const { compose } = require('../../lib/fp.utils.js');
 const { CSV } = require('./CSVParser');
 const { RecordSet } = require('./RecordSet');
 const { DensityReport } = require('./DensityReport.js');
+const { createRecordAdapter } = require('./RecordAdapter.js');
+
+const defRecordScheme = {
+  city: { colIndex: 0 },
+  population: { colIndex: 1, map: parseInt },
+  area: { colIndex: 2, map: parseInt },
+  density: { colIndex: 3, map: parseInt },
+  country: { colIndex: 4 },
+  rating: {},
+};
 
 const createReport = (rawData, opts = {}) => {
   const skipFirst = opts.skipFirst ?? 1;
@@ -12,21 +22,29 @@ const createReport = (rawData, opts = {}) => {
   const lineSeparator = opts.lineSeparator || '\n';
   const columnSeparator = opts.columnSeparator || ',';
   const outScheme = opts.outScheme || DensityReport.defaultFormat;
-  const inputScheme = opts.inputScheme || {
-    city: { colIndex: 0 },
-    population: { colIndex: 1, map: parseInt },
-    area: { colIndex: 2, map: parseInt },
-    density: { colIndex: 3, map: parseInt },
-    country: { colIndex: 4 },
-  };
+  const recordScheme = opts.inputScheme || defRecordScheme;
 
-  const parseOpts = { skipFirst, skipLast, lineSeparator, columnSeparator };
+  const parseOpts = {
+    skipFirst,
+    skipLast,
+    lineSeparator,
+    columnSeparator,
+    map: createRecordAdapter(recordScheme),
+  };
   const parse = (data) => CSV.parse(data, parseOpts);
-  const convert = (table) => RecordSet.fromTable(inputScheme, table);
-  const createReport = (rs) => DensityReport.create(rs).format(outScheme);
+  const createReport = compose(
+    (rs) => DensityReport.create(rs),
+    (records) => RecordSet.create(records),
+  );
+  const format = (scheme) => (report) => report.format(scheme);
   const print = (printFn) => (data) => data.map((e) => printFn(e));
 
-  const process = compose(print(console.log), createReport, convert, parse);
+  const process = compose(
+    print(console.log),
+    format(outScheme),
+    createReport,
+    parse,
+  );
   process(rawData);
 };
 

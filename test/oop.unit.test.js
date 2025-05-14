@@ -23,11 +23,11 @@ describe('oop: recordset', () => {
     ['Lagos', 100],
     ['Delhi', 80],
   ];
-  const scheme = {
-    city: { colIndex: 0 },
-    population: { colIndex: 1, map: (v) => parseInt(v) },
-  };
-  const mockRecordSet = () => RecordSet.fromTable(scheme, mockData);
+  const mockRecords = mockData.map(({ 0: city, 1: population }) => ({
+    city,
+    population,
+  }));
+  const mockRecordSet = () => RecordSet.create(mockRecords);
 
   it('oop: fromTable', () => {
     const rs = mockRecordSet();
@@ -72,22 +72,18 @@ describe('oop: recordset', () => {
 
 describe('oop: report', () => {
   const mockData = [
-    ['Tokyo', 40],
-    ['Lagos', 100],
-    ['Delhi', 80],
+    { city: 'Lagos', density: 100 },
+    { city: 'Delhi', density: 80 },
+    { city: 'Tokyo', density: 40 },
   ];
   const expected = [
     { city: 'Lagos', density: 100, rating: 100 },
     { city: 'Delhi', density: 80, rating: 80 },
     { city: 'Tokyo', density: 40, rating: 40 },
   ];
-  const scheme = {
-    city: { colIndex: 0 },
-    density: { colIndex: 1, map: (v) => parseInt(v) },
-  };
 
   const createReport = () => {
-    const mockRecordSet = RecordSet.fromTable(scheme, mockData);
+    const mockRecordSet = RecordSet.create(mockData);
     const res = DensityReport.create(mockRecordSet);
     return res;
   };
