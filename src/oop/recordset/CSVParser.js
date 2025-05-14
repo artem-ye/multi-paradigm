@@ -6,6 +6,7 @@ class CSV {
   #columnSeparator = '';
   #skipFirst = 0;
   #skipLast = 0;
+  #mapRow = null;
 
   static parse(data, opts = {}) {
     const instance = new this(data, opts);
@@ -18,6 +19,7 @@ class CSV {
     this.#skipFirst = opts.skipFirst ?? 0;
     this.#skipLast = opts.skipLast ?? 0;
     this.#rawData = data;
+    this.#mapRow = opts.map || ((row) => row);
   }
 
   #parse() {
@@ -34,7 +36,9 @@ class CSV {
   }
 
   #parseCols(table) {
-    return table.map((row) => row.split(this.#columnSeparator));
+    return table
+      .map((row) => row.split(this.#columnSeparator))
+      .map(this.#mapRow);
   }
 }
 

@@ -4,12 +4,11 @@ class RecordSet {
   #data = null;
 
   constructor(records) {
-    this.#data = records;
+    this.#data = [...records];
   }
 
-  static fromTable(scheme, table) {
-    const records = toRecords(scheme, table);
-    return new RecordSet(records);
+  static create(table) {
+    return new this(table);
   }
 
   get data() {
@@ -34,32 +33,6 @@ class RecordSet {
   map(fn) {
     return this.#data.map(fn);
   }
-}
-
-function toRecords(scheme, array) {
-  const meta = Object.entries(scheme).map(({ 0: field, 1: params }) => ({
-    field,
-    colIndex: params.colIndex,
-    map: params.map,
-  }));
-
-  const recordFactory = () => {
-    const proto = Object.create(null);
-    for (const { field } of meta) {
-      proto[field] = undefined;
-    }
-    return () => Object.create(proto);
-  };
-  const createRecord = recordFactory();
-
-  const records = array.map((row) => {
-    const record = createRecord();
-    for (const { field, colIndex, map } of meta) {
-      record[field] = map ? map(row[colIndex]) : row[colIndex];
-    }
-    return record;
-  });
-  return records;
 }
 
 module.exports = { RecordSet };
