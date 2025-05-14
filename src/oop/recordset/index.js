@@ -23,7 +23,6 @@ const createReport = (rawData, opts = {}) => {
   const columnSeparator = opts.columnSeparator || ',';
   const outScheme = opts.outScheme || DensityReport.defaultFormat;
   const recordScheme = opts.inputScheme || defRecordScheme;
-
   const parseOpts = {
     skipFirst,
     skipLast,
@@ -31,6 +30,7 @@ const createReport = (rawData, opts = {}) => {
     columnSeparator,
     map: createRecordAdapter(recordScheme),
   };
+
   const parse = (data) => CSV.parse(data, parseOpts);
   const createReport = compose(
     (rs) => DensityReport.create(rs),
