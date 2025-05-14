@@ -29,7 +29,7 @@ describe('oop: recordset', () => {
   }));
   const mockRecordSet = () => RecordSet.create(mockRecords);
 
-  it('oop: fromTable', () => {
+  it('oop: create', () => {
     const rs = mockRecordSet();
     const records = rs.data;
     assert.strictEqual(records.length, mockData.length);
