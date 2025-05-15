@@ -10,16 +10,16 @@ const parseScheme = (scheme) => {
   return res;
 };
 
-const createRecordFactory = (meta) => {
+const toRecordFactory = (meta) => {
   const proto = Object.create(null);
   for (const { field } of meta) proto[field] = undefined;
   return () => Object.create(proto);
 };
 
-const createRecordAdapter = (scheme) => {
+const toRecordAdapter = (scheme) => {
   const meta = parseScheme(scheme);
   const adapterMeta = meta.filter((e) => e.colIndex !== undefined);
-  const createRecord = createRecordFactory(meta);
+  const createRecord = toRecordFactory(meta);
 
   const adapter = (row) => {
     const record = createRecord();
@@ -33,7 +33,7 @@ const createRecordAdapter = (scheme) => {
 
 class RecordAdapterFactory {
   static fromScheme(scheme) {
-    return createRecordAdapter(scheme);
+    return toRecordAdapter(scheme);
   }
 }
 
