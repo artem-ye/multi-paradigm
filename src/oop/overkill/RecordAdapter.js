@@ -1,6 +1,6 @@
 'use strict';
 
-const recordFactory = (meta) => {
+const createRecordFactory = (meta) => {
   const proto = Object.create(null);
   for (const { field } of meta) proto[field] = undefined;
   return () => Object.create(proto);
@@ -14,7 +14,7 @@ const createRecordAdapter = (scheme) => {
   }));
   const adapterMeta = meta.filter((e) => e.colIndex !== undefined);
 
-  const createRecord = recordFactory(meta);
+  const createRecord = createRecordFactory(meta);
 
   const adapter = (row) => {
     const record = createRecord();
