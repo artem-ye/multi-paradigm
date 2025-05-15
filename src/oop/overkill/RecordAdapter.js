@@ -31,4 +31,10 @@ const createRecordAdapter = (scheme) => {
   return adapter;
 };
 
-module.exports = { createRecordAdapter };
+class RecordAdapterFactory {
+  static fromScheme(scheme) {
+    return createRecordAdapter(scheme);
+  }
+}
+
+module.exports = { RecordAdapterFactory };
