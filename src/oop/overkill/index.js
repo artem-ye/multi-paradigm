@@ -2,8 +2,8 @@
 
 const { console } = require('../../../deps/deps.js');
 const { compose } = require('../../lib/fp.utils.js');
-const { CSV } = require('./CSVParser');
-const { RecordSet } = require('./RecordSet');
+const { CSV } = require('./CSVParser.js');
+const { RecordSet } = require('./RecordSet.js');
 const { DensityReport } = require('./DensityReport.js');
 const { createRecordAdapter } = require('./RecordAdapter.js');
 

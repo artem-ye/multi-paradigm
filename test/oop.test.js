@@ -11,7 +11,7 @@ mock.module('../deps/deps.js', {
 });
 beforeEach(() => mockedLog.mock.resetCalls());
 
-const { createReport } = require('../src/oop/recordset/index.js');
+const { createReport } = require('../src/oop/overkill/index.js');
 
 const data = `city,population,area,density,country
 Shanghai,24256800,6340,3826,China
