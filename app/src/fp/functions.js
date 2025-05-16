@@ -1,6 +1,6 @@
 'use strict';
 
-const { compose, curry } = require('../lib/fp.utils.js');
+const { compose, curry } = require('../../lib/fp.utils.js');
 
 const defaults = {
   skipFirst: 1,

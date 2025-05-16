@@ -1,7 +1,7 @@
 'use strict';
 
 const { console } = require('../../deps/deps.js');
-const { compose } = require('../lib/fp.utils.js');
+const { compose } = require('../../lib/fp.utils.js');
 const { defaults, print, format, build, parse } = require('./functions.js');
 
 const createReport = (data, opts = {}) => {

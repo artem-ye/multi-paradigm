@@ -2,10 +2,11 @@
   "name": "patterns",
   "version": "1.0.0",
   "scripts": {
-    "test": "node --test --experimental-test-module-mocks",
+    "test": "NODE_PATH=. node --test --experimental-test-module-mocks",
     "types": "tsc -p ./tsconfig.json",
     "lint": "eslint .; prettier -c \"**/*.js\"",
-    "fix": "eslint . --fix; prettier --write \"**/*.js\""
+    "fix": "eslint . --fix; prettier --write \"**/*.js\"",
+    "app": "NODE_PATH=. node app/index.js"
   },
   "author": "Timur Shemsedinov",
   "private": true,

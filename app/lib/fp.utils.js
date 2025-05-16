@@ -11,4 +11,7 @@ const curry = (fn) => (...args) => {
 // prettier-ignore
 const compose = (...fns) => (arg) => fns.reduceRight((arg, fn) => fn(arg), arg);
 
-module.exports = { curry, compose };
+// prettier-ignore
+const chain = (...fns) => (arg) => fns.reduce((arg, fn) => fn(arg), arg);
+
+module.exports = { curry, compose, chain };
