@@ -1,7 +1,5 @@
 'use strict';
 
-const { console } = require('app/dependency/system.js');
-
 function format(table, scheme) {
   const meta = Object.entries(scheme);
   const format = (row) => meta.reduce((acc, [i, fn]) => acc + fn(row[i]), '');
@@ -12,7 +10,7 @@ function print(table, console) {
   table.forEach((row) => console.log(row));
 }
 
-const render = (table, scheme) => {
+const render = (table, { scheme, console }) => {
   const formatted = format(table, scheme);
   print(formatted, console);
 };

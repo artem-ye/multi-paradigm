@@ -1,5 +1,6 @@
 'use strict';
 
+const { console } = require('app/dependency/system.js');
 const { chain } = require('app/dependency/fp.utils.js');
 const { parse, prepare, render } = require('./helpers/index.js');
 
@@ -28,7 +29,7 @@ const renderReport = (data, opts) => {
   const fork = chain(
     _parse({ colSeparator, rowSeparator, cutHead, cutTail }),
     _prepare({ densityIndex }),
-    _render(scheme),
+    _render({ scheme, console }),
   );
   fork(data);
 };
