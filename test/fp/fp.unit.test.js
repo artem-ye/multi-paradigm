@@ -3,7 +3,7 @@
 const assert = require('node:assert');
 const { it } = require('node:test');
 
-const { parse, build, format } = require('../src/fp/functions.js');
+const { parse, build, format } = require('app/src/fp/functions.js');
 
 it('fp.parse', () => {
   const raw = `city,population\nShanghai,24256800`;

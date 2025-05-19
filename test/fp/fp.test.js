@@ -4,14 +4,14 @@ const assert = require('node:assert');
 const { it, mock, beforeEach } = require('node:test');
 
 const mockedLog = mock.fn();
-mock.module('../deps/deps.js', {
+mock.module('../../app/dependency/system.js', {
   defaultExport: {
     console: { log: mockedLog },
   },
 });
 beforeEach(() => mockedLog.mock.resetCalls());
 
-const { createReport } = require('../src/fp/createReport.js');
+const { renderReport } = require('app/src/fp/renderReport.js');
 
 const data = `city,population,area,density,country
 Shanghai,24256800,6340,3826,China
@@ -39,7 +39,7 @@ const expectedOutput = rawOut.split('\n');
 const expectedOutputCount = expectedOutput.length;
 
 it('fp: common use case', () => {
-  createReport(data);
+  renderReport(data);
   assert.strictEqual(mockedLog.mock.callCount(), expectedOutputCount);
   for (let i = 0; i < expectedOutputCount; i++) {
     assert.equal(mockedLog.mock.calls[i].arguments[0], expectedOutput[i]);

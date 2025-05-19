@@ -2,25 +2,6 @@
 
 const { compose, curry } = require('../../lib/fp.utils.js');
 
-const defaults = {
-  skipFirst: 1,
-  skipLast: 1,
-  densityIndex: 3,
-  get formatScheme() {
-    const padEnd = curry((padding, s) => String(s).padEnd(padding));
-    const padStart = curry((padding, s) => String(s).padStart(padding));
-    const scheme = {
-      0: padEnd(18),
-      1: padStart(10),
-      2: padStart(8),
-      3: padStart(8),
-      4: padStart(18),
-      5: padStart(6),
-    };
-    return scheme;
-  },
-};
-
 const format = curry((scheme, table) => {
   const meta = Object.entries(scheme);
   const formatRow = (row) =>
@@ -58,4 +39,4 @@ const build = curry((densityIdx, table) => {
 
 const print = curry((printFn, table) => table.forEach((e) => printFn(e)));
 
-module.exports = { defaults, format, parse, build, print };
+module.exports = { format, parse, build, print };

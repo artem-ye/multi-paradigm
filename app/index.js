@@ -2,8 +2,9 @@
 
 const { console } = require('app/dependency/system.js');
 const proc = require('app/src/proc/app.js');
+const fp = require('app/src/fp/app.js');
 
-const apps = { proc };
+const apps = { proc, fp };
 
 const validateAppName = (appName) => {
   if (!appName) return 'app-name command line param required';
