@@ -19,8 +19,14 @@ const defaultScheme = () => {
 };
 
 const renderReport = (data, opts) => {
-  const { densityIndex, rowSeparator, colSeparator, cutHead, cutTail, scheme } =
-    opts;
+  const {
+    densityIndex,
+    rowSeparator = '\n',
+    colSeparator = ',',
+    cutHead = 1,
+    cutTail = 1,
+    scheme = defaultScheme(),
+  } = opts;
 
   const curryReverse = (fn) => (opts) => (data) => fn(data, opts);
   const _parse = curryReverse(parse);
