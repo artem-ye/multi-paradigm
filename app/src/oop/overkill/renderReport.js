@@ -1,7 +1,7 @@
 'use strict';
 
-const { console } = require('../../../deps/deps.js');
-const { compose } = require('../../lib/fp.utils.js');
+const { console } = require('app/dependency/system.js');
+const { chain } = require('app/dependency/fp.utils.js');
 const { CSV } = require('./CSVParser.js');
 const { RecordSet } = require('./RecordSet.js');
 const { DensityReport } = require('./DensityReport.js');
@@ -16,7 +16,7 @@ const defRecordScheme = {
   rating: {},
 };
 
-const createReport = (rawData, opts = {}) => {
+const renderReport = (rawData, opts = {}) => {
   const skipFirst = opts.skipFirst ?? 1;
   const skipLast = opts.skipLast ?? 1;
   const lineSeparator = opts.lineSeparator || '\n';
@@ -32,20 +32,15 @@ const createReport = (rawData, opts = {}) => {
   };
 
   const parse = (data) => CSV.parse(data, parseOpts);
-  const createReport = compose(
-    (rs) => DensityReport.create(rs),
+  const prepare = chain(
     (records) => RecordSet.create(records),
+    (rs) => DensityReport.create(rs),
   );
   const format = (scheme) => (report) => report.format(scheme);
   const print = (printFn) => (data) => data.map((e) => printFn(e));
 
-  const process = compose(
-    print(console.log),
-    format(outScheme),
-    createReport,
-    parse,
-  );
+  const process = chain(parse, prepare, format(outScheme), print(console.log));
   process(rawData);
 };
 
-module.exports = { createReport };
+module.exports = { renderReport };

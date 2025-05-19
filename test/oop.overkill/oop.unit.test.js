@@ -3,9 +3,9 @@
 const assert = require('node:assert');
 const { it, describe } = require('node:test');
 
-const { CSV } = require('../src/oop/overkill/CSVParser.js');
-const { RecordSet } = require('../src/oop/overkill/RecordSet.js');
-const { DensityReport } = require('../src/oop/overkill/DensityReport.js');
+const { CSV } = require('app/src/oop/overkill/CSVParser.js');
+const { RecordSet } = require('app/src/oop/overkill/RecordSet.js');
+const { DensityReport } = require('app/src/oop/overkill/DensityReport.js');
 
 it('oop: parser', () => {
   const raw = `city,population\nShanghai,24256800`;
