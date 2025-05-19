@@ -3,9 +3,9 @@
 const assert = require('node:assert');
 const { it } = require('node:test');
 
-const { CSVParser } = require('../src/oop/minimal/CSVParser.js');
-const { DensityReport } = require('../src/oop/minimal/DensityReport.js');
-const { createRender } = require('../src/oop/minimal/Render.js');
+const { CSVParser } = require('app/src/oop/minimal/CSVParser.js');
+const { DensityReport } = require('app/src/oop/minimal/DensityReport.js');
+const { createRender } = require('app/src/oop/minimal/createRender.js');
 
 it('oop.minimal: parser', () => {
   const raw = `city,population\nShanghai,24256800`;

@@ -3,8 +3,9 @@
 const { console } = require('app/dependency/system.js');
 const proc = require('app/src/proc/app.js');
 const fp = require('app/src/fp/app.js');
+const oopMin = require('app/src/oop/minimal/app.js');
 
-const apps = { proc, fp };
+const apps = { proc, fp, 'oop/minimal': oopMin };
 
 const validateAppName = (appName) => {
   if (!appName) return 'app-name command line param required';

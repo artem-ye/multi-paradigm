@@ -1,6 +1,6 @@
 'use strict';
 
-const { compose } = require('../../lib/fp.utils');
+const { compose } = require('app/dependency/fp.utils.js');
 
 const format = (scheme) => (table) => {
   const meta = Object.entries(scheme);
