@@ -17,16 +17,19 @@ const defaultScheme = () => {
   return scheme;
 };
 
-const renderReport = (data, opts = {}) => {
-  const densityIndex = opts.densityIndex;
-  const cutHead = opts.cutHead;
-  const cutTail = opts.cutTail;
-  const formatScheme = opts.scheme;
+const renderReport = (data, opts) => {
+  const { densityIndex, rowSeparator, colSeparator, cutHead, cutTail, scheme } =
+    opts;
 
-  const _parse = (data) => parse(data, { cutHead, cutTail });
-  const _prepare = (table) => prepare(table, { densityIndex });
-  const _render = (table) => render(table, formatScheme);
-  const fork = chain(_parse, _prepare, _render);
+  const curryReverse = (fn) => (opts) => (data) => fn(data, opts);
+  const _parse = curryReverse(parse);
+  const _prepare = curryReverse(prepare);
+  const _render = curryReverse(render);
+  const fork = chain(
+    _parse({ colSeparator, rowSeparator, cutHead, cutTail }),
+    _prepare({ densityIndex }),
+    _render(scheme),
+  );
   fork(data);
 };
 
