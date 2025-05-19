@@ -1,13 +1,14 @@
 {
   "name": "patterns",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
-    "test": "node --test --experimental-test-module-mocks",
+    "test": "NODE_PATH=. node --test --experimental-test-module-mocks",
     "types": "tsc -p ./tsconfig.json",
     "lint": "eslint .; prettier -c \"**/*.js\"",
-    "fix": "eslint . --fix; prettier --write \"**/*.js\""
+    "fix": "eslint . --fix; prettier --write \"**/*.js\"",
+    "app": "NODE_PATH=. node app/index.js"
   },
-  "author": "Timur Shemsedinov",
+  "author": "Artem Yemelianov",
   "private": true,
   "dependencies": {
     "eslint": "^9.12.0",
